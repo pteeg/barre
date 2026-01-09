@@ -1,0 +1,15 @@
+.page {
+  height: 100%;
+  width: 100%;
+}
+
+.page-content {
+  padding: 24px;
+}
+
+@media (max-width: 768px) {
+  /* Extra bottom padding on phone so content clears floating sidebar */
+  .page-content {
+    padding-bottom: 120px;
+  }
+}

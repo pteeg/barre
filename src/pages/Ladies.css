@@ -1,0 +1,337 @@
+.page {
+  height: 100%;
+  width: 100%;
+}
+
+.page-content {
+  padding: 32px;
+}
+
+.ladies-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.ladies-title {
+  font-size: 32px;
+  font-weight: 600;
+  color: #000;
+}
+
+.add-girly-btn {
+  background-color: #000;
+  color: white;
+  border: none;
+  padding: 14px 24px;
+  border-radius: 24px;
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.add-girly-btn:hover {
+  background-color: #333;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.ladies-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.lady-tile {
+  background-color: white;
+  border-radius: 16px;
+  padding: 20px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.lady-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+}
+
+.lady-name {
+  font-size: 20px;
+  font-weight: 500;
+  color: #000;
+}
+
+.lady-first-name,
+.lady-surname {
+  display: inline;
+}
+
+.lady-first-name {
+  margin-right: 4px;
+}
+
+@media (max-width: 768px) {
+  .lady-name {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+
+  .lady-first-name,
+  .lady-surname {
+    display: block;
+  }
+
+  .lady-credits-in-use {
+    display: block;
+    margin-left: 0;
+    margin-top: 2px;
+  }
+
+  /* Hide phone number on girlies tiles in phone view */
+  .lady-phone {
+    display: none;
+  }
+
+  .add-credits-btn .add-credits-text {
+    display: none;
+  }
+
+  .add-credits-btn .add-credits-icon {
+    display: inline;
+  }
+
+  /* Extra bottom padding on phone so content clears floating sidebar */
+  .page-content {
+    padding-bottom: 120px;
+  }
+}
+
+.lady-separator {
+  font-size: 20px;
+  font-weight: 400;
+  color: #999;
+}
+
+.lady-phone {
+  font-size: 18px;
+  font-weight: 400;
+  color: #000;
+  cursor: pointer;
+  background-color: #f5f5f5;
+  padding: 6px 12px;
+  border-radius: 16px;
+  transition: all 0.2s ease;
+}
+
+.lady-phone:hover {
+  background-color: #e0e0e0;
+}
+
+.lady-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.lady-credits {
+  font-size: 18px;
+  font-weight: 400;
+  color: #000;
+}
+
+.lady-credits-in-use {
+  color: #666;
+  font-size: 14px;
+  margin-left: 8px;
+}
+
+.add-credits-btn {
+  background-color: white;
+  color: #ffb3d9;
+  border: 2px solid #ffb3d9;
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.add-credits-btn:hover {
+  background-color: #ffb3d9;
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 179, 217, 0.3);
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  border-radius: 24px;
+  padding: 32px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.modal-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #000;
+  margin-bottom: 24px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.remove-girly-btn {
+  background-color: #ff3b30;
+  color: white;
+  border: none;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: 24px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(255, 59, 48, 0.3);
+}
+
+.remove-girly-btn:hover {
+  background-color: #ff2d20;
+  box-shadow: 0 4px 12px rgba(255, 59, 48, 0.4);
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 16px;
+  font-weight: 500;
+  color: #000;
+}
+
+.form-group input {
+  padding: 12px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  font-size: 16px;
+  transition: border-color 0.2s ease;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #000;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.cancel-btn {
+  background-color: transparent;
+  color: #000;
+  border: 2px solid #e0e0e0;
+  padding: 12px 24px;
+  border-radius: 16px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cancel-btn:hover {
+  border-color: #000;
+  background-color: #f5f5f5;
+}
+
+.add-btn {
+  background-color: #000;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 16px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.add-btn:hover {
+  background-color: #333;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.add-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.credits-options {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.credit-option-btn {
+  flex: 1;
+  background-color: #000;
+  color: white;
+  border: none;
+  padding: 16px 24px;
+  border-radius: 16px;
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.credit-option-btn:hover {
+  background-color: #333;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
