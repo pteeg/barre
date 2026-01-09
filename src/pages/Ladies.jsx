@@ -263,16 +263,14 @@ function Ladies() {
                   
                   return (
                     <>
-                      {totalCredits > 0 && (
-                        <span className="lady-credits">
-                          {remainingCredits} {remainingCredits === 1 ? 'credit' : 'credits'} remaining
-                          {creditsInUse > 0 && (
-                            <span className="lady-credits-in-use">
-                              (+ {creditsInUse} {creditsInUse === 1 ? 'credit' : 'credits'} in use)
-                            </span>
-                          )}
-                        </span>
-                      )}
+                      <span className="lady-credits">
+                        {remainingCredits} {remainingCredits === 1 ? 'credit' : 'credits'} remaining
+                        {creditsInUse > 0 && (
+                          <span className="lady-credits-in-use">
+                            (+ {creditsInUse} {creditsInUse === 1 ? 'credit' : 'credits'} in use)
+                          </span>
+                        )}
+                      </span>
                     </>
                   )
                 })()}

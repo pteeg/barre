@@ -18,7 +18,8 @@ function ClassTile({
   getPaymentStatus,
   getCreditsInUse,
   expandedClassId,
-  setExpandedClassId
+  setExpandedClassId,
+  onMoveToClass
 }) {
   if (!classItem) return null
 
@@ -141,20 +142,18 @@ function ClassTile({
                           </div>
                         </div>
                         <div className="class-girly-actions">
-                          {remainingCredits > 0 && (
-                            <span className="class-girly-credits">{remainingCredits} {remainingCredits === 1 ? 'credit' : 'credits'} remaining</span>
-                          )}
+                          <span className="class-girly-credits">{remainingCredits} {remainingCredits === 1 ? 'credit' : 'credits'} remaining</span>
                           {paymentStatus && paymentStatus !== 'Credit used' && paymentStatus !== 'Paid' && !paymentStatus.startsWith('Owes') && (
                             <span className="payment-status">{paymentStatus}</span>
                           )}
                           <button 
-                            className={`payment-btn ${paymentStatus === 'Credit used' ? 'payment-btn-credit-used' : ''}`}
+                            className={`payment-btn ${paymentStatus === 'Credit used' ? 'payment-btn-credit-used' : ''} ${paymentStatus === 'Paid' ? 'payment-btn-paid' : ''}`}
                             onClick={(e) => {
                               e.stopPropagation()
                               onOpenPaymentModal(girlyId, e, classItem.id)
                             }}
                           >
-                            {paymentStatus || 'Payment'}
+                            {paymentStatus || 'Choose Payment'}
                           </button>
                           <button 
                             className="ellipses-btn"
@@ -179,7 +178,6 @@ function ClassTile({
                     const girly = girlies.find(g => g.id === girlyId)
                     if (!girly) return null
                     const remainingCredits = getRemainingCredits(girlyId)
-                    const paymentStatus = getPaymentStatus(girlyId, classItem)
                     return (
                       <div 
                         key={girlyId} 
@@ -199,30 +197,19 @@ function ClassTile({
                           </div>
                         </div>
                         <div className="class-girly-actions">
-                          {remainingCredits > 0 && (
-                            <span className="class-girly-credits">{remainingCredits} {remainingCredits === 1 ? 'credit' : 'credits'} remaining</span>
+                          <span className="class-girly-credits">{remainingCredits} {remainingCredits === 1 ? 'credit' : 'credits'} remaining</span>
+                          {/* Move to Class button for waitlist entries */}
+                          {onMoveToClass && (
+                            <button 
+                              className="move-to-class-btn"
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                onMoveToClass(girlyId, classItem.id)
+                              }}
+                            >
+                              Move to Class
+                            </button>
                           )}
-                          {paymentStatus && paymentStatus !== 'Credit used' && paymentStatus !== 'Paid' && !paymentStatus.startsWith('Owes') && (
-                            <span className="payment-status">{paymentStatus}</span>
-                          )}
-                          <button 
-                            className={`payment-btn ${paymentStatus === 'Credit used' ? 'payment-btn-credit-used' : ''}`}
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              onOpenPaymentModal(girlyId, e, classItem.id)
-                            }}
-                          >
-                            {paymentStatus || 'Payment'}
-                          </button>
-                          <button 
-                            className="ellipses-btn"
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              onOpenEllipsesModal(girlyId, e)
-                            }}
-                          >
-                            <i className="fa-solid fa-ellipsis"></i>
-                          </button>
                         </div>
                       </div>
                     )

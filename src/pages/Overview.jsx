@@ -267,9 +267,9 @@ function Overview() {
         const coming = (classItem.coming || []).filter(id => id !== selectedGirlyForEllipses)
         const waitingList = [...new Set([...(classItem.waitingList || []), selectedGirlyForEllipses])]
         
-        // Clear credit payment when moving to waiting list (waiting list doesn't use credits)
+        // Clear ALL payment types when moving to waiting list (waiting list doesn't use credits or have payments)
         const payments = { ...(classItem.payments || {}) }
-        if (payments[selectedGirlyForEllipses]?.type === 'credit') {
+        if (payments[selectedGirlyForEllipses]) {
           delete payments[selectedGirlyForEllipses]
         }
         
@@ -287,40 +287,46 @@ function Overview() {
     }
   }
 
-  const handleMoveToClass = async () => {
-    if (expandedClassId && selectedGirlyForEllipses) {
-      const classItem = classes.find(c => c.id === expandedClassId)
-      if (!classItem) return
+  const handleMoveToClass = async (girlyId = null, classId = null) => {
+    const targetGirlyId = girlyId || selectedGirlyForEllipses
+    const targetClassId = classId || expandedClassId
+    
+    if (!targetClassId || !targetGirlyId) return
 
-      const girly = girlies.find(g => g.id === selectedGirlyForEllipses)
-      if (!girly) return
+    const classItem = classes.find(c => c.id === targetClassId)
+    if (!classItem) return
 
-      try {
-        // Remove from waitlist, add to coming
-        const waitingList = (classItem.waitingList || []).filter(id => id !== selectedGirlyForEllipses)
-        const coming = [...new Set([...(classItem.coming || []), selectedGirlyForEllipses])]
-        
-        // For upcoming classes, MUST use credit if available
-        const payments = { ...(classItem.payments || {}) }
-        const now = new Date()
-        const isUpcomingOrPrevious = classItem.dateTime && classItem.dateTime.toDate ? classItem.dateTime.toDate() : new Date(classItem.dateTime)
-        const isUpcoming = isUpcomingOrPrevious > now
-        
-        if (isUpcoming && girly.credits > 0 && !payments[selectedGirlyForEllipses]) {
-          payments[selectedGirlyForEllipses] = { type: 'credit', status: 'used' }
-        }
-        
-        await updateClass(expandedClassId, {
-          coming,
-          waitingList,
-          payments
-        })
-        
-        handleCloseEllipsesModal()
-      } catch (error) {
-        console.error('Error moving to class:', error)
-        alert('Failed to move to class. Please try again.')
+    const girly = girlies.find(g => g.id === targetGirlyId)
+    if (!girly) return
+
+    try {
+      // Remove from waitlist, add to coming
+      const waitingList = (classItem.waitingList || []).filter(id => id !== targetGirlyId)
+      const coming = [...new Set([...(classItem.coming || []), targetGirlyId])]
+      
+      // For upcoming classes, MUST use credit if available
+      const payments = { ...(classItem.payments || {}) }
+      const now = new Date()
+      const isUpcomingOrPrevious = classItem.dateTime && classItem.dateTime.toDate ? classItem.dateTime.toDate() : new Date(classItem.dateTime)
+      const isUpcoming = isUpcomingOrPrevious > now
+      
+      if (isUpcoming && girly.credits > 0 && !payments[targetGirlyId]) {
+        payments[targetGirlyId] = { type: 'credit', status: 'used' }
       }
+      
+      await updateClass(targetClassId, {
+        coming,
+        waitingList,
+        payments
+      })
+      
+      if (!girlyId) {
+        // Only close modal if called from ellipses menu
+        handleCloseEllipsesModal()
+      }
+    } catch (error) {
+      console.error('Error moving to class:', error)
+      alert('Failed to move to class. Please try again.')
     }
   }
 
@@ -400,24 +406,28 @@ function Overview() {
       selectedGirlies.forEach(girlyId => {
         const girly = girlies.find(g => g.id === girlyId)
         if (girly) {
-          // Only assign credits if adding to 'coming' list, not 'waitingList'
-          // Waiting list doesn't use credits
-          if (!payments[girlyId]) {
-            if (addToListType === 'waitingList') {
-              // Don't assign credits for waiting list
-              payments[girlyId] = null
-            } else if (isNextClass) {
-              if (girly.credits > 0) {
-                payments[girlyId] = { type: 'credit', status: 'used' }
+          if (addToListType === 'waitingList') {
+            // Clear any existing payment when adding to waiting list (waiting list doesn't use credits or have payments)
+            if (payments[girlyId]) {
+              delete payments[girlyId]
+            }
+          } else {
+            // Only assign credits if adding to 'coming' list, not 'waitingList'
+            // Waiting list doesn't use credits
+            if (!payments[girlyId]) {
+              if (isNextClass) {
+                if (girly.credits > 0) {
+                  payments[girlyId] = { type: 'credit', status: 'used' }
+                } else {
+                  payments[girlyId] = null
+                }
               } else {
-                payments[girlyId] = null
-              }
-            } else {
-              const remainingCredits = getRemainingCredits(girlyId)
-              if (remainingCredits > 0) {
-                payments[girlyId] = { type: 'credit', status: 'used' }
-              } else {
-                payments[girlyId] = null
+                const remainingCredits = getRemainingCredits(girlyId)
+                if (remainingCredits > 0) {
+                  payments[girlyId] = { type: 'credit', status: 'used' }
+                } else {
+                  payments[girlyId] = null
+                }
               }
             }
           }
@@ -533,6 +543,10 @@ function Overview() {
               getCreditsInUse={getCreditsInUse}
               expandedClassId={nextClass.id}
               setExpandedClassId={setExpandedClassId}
+              onMoveToClass={(girlyId) => {
+                setExpandedClassId(nextClass.id)
+                handleMoveToClass(girlyId, nextClass.id)
+              }}
             />
           </div>
         )}
@@ -571,6 +585,10 @@ function Overview() {
               getCreditsInUse={getCreditsInUse}
               expandedClassId={lastClass.id}
               setExpandedClassId={setExpandedClassId}
+              onMoveToClass={(girlyId) => {
+                setExpandedClassId(lastClass.id)
+                handleMoveToClass(girlyId, lastClass.id)
+              }}
             />
           </div>
         )}

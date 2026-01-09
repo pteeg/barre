@@ -383,6 +383,27 @@
   color: #000;
 }
 
+.payment-btn-paid {
+  background-color: #22c55e !important;
+  color: white;
+}
+
+.move-to-class-btn {
+  background-color: #000;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.move-to-class-btn:hover {
+  background-color: #333;
+}
+
 .payment-btn-credit-used:hover {
   background-color: #ff99cc !important;
 }
@@ -696,13 +717,7 @@
   font-size: 16px;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
   text-align: left;
-}
-
-.ellipses-option-btn:hover {
-  border-color: #000;
-  background-color: #f5f5f5;
 }
 
 .add-credits-in-modal-btn {
